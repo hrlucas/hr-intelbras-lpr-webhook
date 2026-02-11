@@ -1,0 +1,1544 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Systems · WhatsApp API</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/logo_hr_azul.svg" sizes="any">
+    <link rel="mask-icon" href="/assets/logo_hr_azul.svg" color="#175098">
+    <meta name="theme-color" content="#0b1220">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --azul-escuro: #00305b;
+            --azul-escurecido: #0a5080;
+            --azul: #175098;
+            --azul-vivo: #0086cd;
+            --azul-acento: #0086cd;
+            --preto: #000000;
+            --branco: #ffffff;
+            --fundo: #f8f9fa;
+            --borda: #dee2e6;
+            --cinza: #6c757d;
+            --sucesso: #10b981;
+            --erro: #ef4444;
+            --aviso: #f59e0b;
+            --logo-escala: 1.2;
+
+            --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            --font-mono: 'Monaco', 'Menlo', 'Consolas', monospace;
+        }
+
+        [data-theme="dark"] {
+            --azul-escuro: #e5edf7;
+            --azul-escurecido: #0f3b5f;
+            --azul: #1f5fa2;
+            --azul-vivo: #19a0e6;
+            --azul-acento: #19a0e6;
+            --preto: #000000;
+            --branco: #111827;
+            --fundo: #0b1220;
+            --borda: #1f2a44;
+            --cinza: #9aa4b2;
+            --sucesso: #34d399;
+            --erro: #f87171;
+            --aviso: #fbbf24;
+        }
+
+        [data-theme="dark"] .form-control[type="file"]::file-selector-button {
+            background-color: #1f2a44;
+            color: #e5edf7;
+            border: 1px solid #2a375a;
+        }
+
+        [data-theme="dark"] .form-control[type="file"]::file-selector-button:hover {
+            background-color: #2a375a;
+        }
+
+        [data-theme="dark"] .modal-footer {
+            background-color: #0f172a;
+        }
+
+        [data-theme="dark"] .modal-footer .btn-secondary {
+            background-color: #1f2a44;
+            color: #e5edf7;
+            border: 1px solid #2a375a;
+        }
+
+        [data-theme="dark"] .modal-footer .btn-secondary:hover {
+            background-color: #2a375a;
+        }
+
+        [data-theme="dark"] .status-button.clear {
+            background-color: #111827;
+            color: #e5edf7;
+            border-color: #1f2a44;
+        }
+
+        [data-theme="dark"] .status-button.clear:hover {
+            border-color: #2a375a;
+        }
+
+        [data-theme="dark"] .alert-sucesso {
+            background-color: rgba(16, 185, 129, 0.12);
+            color: #d1fae5;
+        }
+
+        [data-theme="dark"] .alert-erro {
+            background-color: rgba(239, 68, 68, 0.12);
+            color: #fee2e2;
+        }
+
+        [data-theme="dark"] .alert-aviso {
+            background-color: rgba(245, 158, 11, 0.12);
+            color: #fde68a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            background: var(--fundo);
+            color: var(--azul-escuro);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--branco);
+            color: var(--azul-escuro);
+            padding: 1rem 2rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+            border-bottom: 1px solid var(--borda);
+            flex-shrink: 0;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .theme-toggle {
+            border: 1px solid var(--borda);
+            background: var(--branco);
+            color: var(--azul-escuro);
+            border-radius: 999px;
+            padding: 0.45rem 0.9rem;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--azul-acento);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo-header {
+            width: 112px;
+            height: 112px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+            flex-shrink: 0;
+        }
+
+        .logo-header img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transform: scale(var(--logo-escala));
+            transform-origin: center;
+        }
+
+        .header-text h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.2px;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .title-logo {
+            width: 1.4rem;
+            height: 1.4rem;
+            object-fit: contain;
+        }
+
+        .header-text p {
+            font-size: 12px;
+            color: var(--cinza);
+            letter-spacing: 0.6px;
+            margin: 0.3rem 0 0 0;
+            font-weight: 500;
+        }
+
+        /* CONTEÃƒÅ¡DO PRINCIPAL */
+        .content-wrapper {
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 2.5rem 1.5rem;
+            display: flex;
+            align-items: stretch;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+            gap: 2rem;
+            align-items: start;
+            justify-items: center;
+            width: 100%;
+        }
+
+        /* COLUNA ESQUERDA - FORMULÃƒÂRIO */
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* CARD PRINCIPAL */
+        .card-custom {
+            background-color: var(--branco);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 14px 40px rgba(0, 48, 91, 0.06);
+            border: 1px solid var(--borda);
+            width: 100%;
+            max-width: 720px;
+        }
+
+        .card-custom:hover {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--azul-escuro);
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.6px;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--borda);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .card-title i {
+            color: var(--azul-vivo);
+            font-size: 20px;
+        }
+
+        /* FORMULÃƒÂRIO */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--azul-escuro);
+            margin-bottom: 0.8rem;
+            display: block;
+            letter-spacing: 0.3px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.9rem 1.1rem;
+            border: 2px solid var(--borda);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: var(--font-main);
+            background-color: var(--branco);
+            color: var(--azul-escuro);
+        }
+
+        .form-control[type="file"]::file-selector-button {
+            border-radius: 8px;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin-right: 1rem;
+            background-color: #eef1f4;
+            color: var(--azul-escuro);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .form-control::placeholder {
+            color: var(--cinza);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--azul-acento);
+        }
+
+        .file-list {
+            margin-top: 0.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .file-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            border: 1px solid var(--borda);
+            background-color: #f3f4f6;
+            font-size: 12px;
+            color: var(--azul-escuro);
+        }
+
+        .file-item .file-name {
+            max-width: 160px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-item .file-size {
+            color: var(--cinza);
+            font-size: 11px;
+        }
+
+        .file-remove {
+            border: none;
+            background: transparent;
+            color: var(--erro);
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        textarea.form-control {
+            resize: none;
+            min-height: 110px;
+            font-family: var(--font-main);
+        }
+
+        /* BOTÃƒÆ’O DE ENVIO */
+        .btn-custom {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--azul-escurecido) 0%, var(--azul) 100%);
+            color: var(--branco);
+            box-shadow: 0 4px 15px rgba(19, 25, 51, 0.2);
+        }
+
+        .btn-primary-custom:disabled {
+            background: #e9ecef;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* COLUNA DIREITA - STATUS */
+        .right-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* CARD DE STATUS */
+        .status-card {
+            background-color: var(--branco);
+            color: var(--azul-escuro);
+            border-radius: 16px;
+            padding: 2.2rem 2rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
+            border: 1px solid var(--borda);
+        }
+
+        .status-card-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--cinza);
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .status-indicator {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--borda);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.6rem;
+            font-size: 46px;
+            border: 3px solid var(--borda);
+            position: relative;
+            color: var(--cinza);
+        }
+
+        .status-indicator.conectado {
+            background: rgba(0, 134, 205, 0.1);
+            border-color: var(--azul-vivo);
+            color: var(--azul-vivo);
+        }
+
+        .status-text {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.5px;
+            color: var(--azul-escuro);
+        }
+
+        .status-number {
+            font-size: 15px;
+            color: var(--cinza);
+            margin-bottom: 1.6rem;
+            min-height: 24px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .status-button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+        }
+
+        .status-button.connect {
+            background: linear-gradient(135deg, var(--azul-escurecido) 0%, var(--azul) 100%);
+            color: var(--branco);
+            box-shadow: 0 8px 18px rgba(0, 48, 91, 0.18);
+        }
+
+        .status-button.disconnect {
+            background-color: var(--erro);
+            color: var(--branco);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .status-actions {
+            width: 100%;
+            max-width: 380px;
+            margin-top: 0.8rem;
+        }
+
+        .status-button.clear {
+            background-color: var(--branco);
+            color: var(--azul-escuro);
+            border: 1px solid var(--borda);
+            box-shadow: none;
+        }
+
+        /* MODAL */
+        .modal-content {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            background-color: var(--branco);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul-medio) 100%);
+            color: var(--branco);
+            border: none;
+            border-radius: 16px 16px 0 0;
+            padding: 1.5rem 1.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .modal-header i {
+            font-size: 24px;
+        }
+
+        .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+            opacity: 0.7;
+        }
+
+        .modal-title {
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+        }
+
+        .modal-footer {
+            border: none;
+            padding: 1.5rem 2rem;
+            background-color: var(--fundo);
+            border-radius: 0 0 16px 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .modal-footer .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 0.7rem 1.5rem;
+        }
+
+        .modal-footer .btn-secondary {
+            background-color: #eef1f4;
+            color: var(--azul-escuro);
+            border: none;
+        }
+
+        .alert {
+            border: none;
+            border-radius: 10px;
+            padding: 1.5rem;
+            font-size: 14px;
+            border-left: 4px solid;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .alert i {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .alert-sucesso {
+            background-color: #ECFDF5;
+            color: #065F46;
+            border-left-color: var(--sucesso);
+        }
+
+        .alert-sucesso i {
+            color: var(--sucesso);
+        }
+
+        .alert-erro {
+            background-color: #FEF2F2;
+            color: #7F1D1D;
+            border-left-color: var(--erro);
+        }
+
+        .alert-erro i {
+            color: var(--erro);
+        }
+
+        .alert-aviso {
+            background-color: #FFFBEB;
+            color: #78350F;
+            border-left-color: var(--aviso);
+        }
+
+        .alert-aviso i {
+            color: var(--aviso);
+        }
+
+        #qrModal .modal-body {
+            padding: 0 1.5rem 2rem 1.5rem;
+        }
+
+        #messageModal .modal-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.2rem;
+        }
+
+        #clearConnectionsModal .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        /* QR CODE CONTAINER */
+        .qr-container {
+            text-align: center;
+            padding: 1.5rem 1rem 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .qr-container h6 {
+            color: var(--azul-escuro);
+            margin-bottom: 2rem;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        #qrCode {
+            max-width: 360px;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: block;
+            margin: 0 auto;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 14px;
+            color: var(--cinza);
+            padding: 3rem 2rem;
+        }
+
+        .loading i {
+            font-size: 32px;
+            margin-bottom: 1rem;
+            color: var(--azul-acento);
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 1200px) {
+            .content-grid {
+                gap: 2rem;
+            }
+
+            .card-custom {
+                padding: 2rem;
+            }
+
+            .status-card {
+                padding: 2.5rem 2rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .right-section {
+                justify-content: flex-start;
+            }
+
+            .status-card {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 1.5rem 1rem;
+            }
+
+            .card-custom {
+                padding: 1.5rem;
+            }
+
+            .status-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .header {
+                padding: 1rem 1.5rem;
+            }
+
+            .header-content {
+                gap: 1rem;
+            }
+
+            .header-text h1 {
+                font-size: 20px;
+            }
+
+            .logo-header {
+                width: 50px;
+                height: 50px;
+            }
+
+            .status-indicator {
+                width: 80px;
+                height: 80px;
+                font-size: 36px;
+            }
+
+            .status-text {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="logo-header">
+                    <img src="/assets/whatsapp_hr_api.svg" alt="Logo HR Systems">
+                </div>
+                <div class="header-text">
+                    <h1>HR - WhatsApp API</h1>
+                    <p>API para envio de mensagens e automação de sistemas com WhatsApp Web</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button type="button" class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Modo escuro</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTEÃƒÅ¡DO PRINCIPAL -->
+    <div class="content-wrapper">
+        <div class="content-grid">
+            <!-- COLUNA ESQUERDA - FORMULÃƒÂRIO -->
+            <div class="left-section">
+                <div class="card-custom">
+                    <h2 class="card-title">
+                        <i class="fas fa-envelope"></i>
+                        Estrutura da mensagem
+                    </h2>
+                    
+                    <form id="messageForm" action="/api/messages/send" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
+                        <div class="form-group">
+                            <label for="recipients" class="form-label">
+                                <i class="fas fa-phone" style="color: var(--azul-acento); margin-right: 0.5rem;"></i>
+                                Destinatários
+                            </label>
+                            <input type="text" id="recipients" name="recipients" class="form-control" 
+                                   placeholder="Nome do destinatário..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message" class="form-label">
+                                <i class="fas fa-comment" style="color: var(--azul-acento); margin-right: 0.5rem;"></i>
+                                Mensagem
+                            </label>
+                            <textarea id="message" name="message" class="form-control" 
+                                      placeholder="Digite sua mensagem aqui..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="file" class="form-label">
+                                <i class="fas fa-paperclip" style="color: var(--azul-acento); margin-right: 0.5rem;"></i>
+                                Anexar Arquivo (Opcional)
+                            </label>
+                            <input type="file" id="file" name="file" class="form-control" multiple>
+                            <div id="fileList" class="file-list"></div>
+                        </div>
+
+                        <button type="submit" class="btn-custom btn-primary-custom">
+                            <i class="fas fa-paper-plane"></i>
+                            Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- COLUNA DIREITA - STATUS -->
+            <div class="right-section">
+                <div class="status-card">
+                    <div class="status-card-title">
+                        <i class="fas fa-wifi" style="margin-right: 0.5rem;"></i>
+                        Status da Conexão
+                    </div>
+                    <div class="status-indicator" id="statusIndicator">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="status-text" id="connectionStatus">Desconectado</div>
+                    <div class="status-number" id="numeroConectado"></div>
+                    <div id="connectBtn"></div>
+                </div>
+                <div class="status-actions">
+                    <button class="status-button clear" onclick="openClearConnectionsModal()">
+                        <i class="fas fa-trash-alt"></i>
+                        Limpar conexões
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PARA QR CODE -->
+<div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 520px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrModalLabel">
+                    <i class="fas fa-qrcode" style="margin-right: 0.8rem;"></i>
+                    Conectar ao WhatsApp
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="qr-container">
+                    <h6>Escaneie o código abaixo com seu WhatsApp</h6>
+                    <div id="qrCodeContainer">
+                        <div class="loading" id="loadingMessage">
+                            <i class="fas fa-spinner"></i>
+                            <p>Carregando QR Code...</p>
+                        </div>
+                        <img id="qrCode" src="" alt="QR Code" style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PARA MENSAGENS -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 520px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Mensagem</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="messageModalBody">
+                <!-- Conteúdo da mensagem será inserido via JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PARA API KEY -->
+<div class="modal fade" id="apiKeyModal" tabindex="-1" aria-labelledby="apiKeyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 520px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="apiKeyModalLabel">
+                    <i class="fas fa-key" style="margin-right: 0.8rem;"></i>
+                    Chave de API
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-aviso" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span id="apiKeyMessage">Informe a chave de API para continuar.</span>
+                </div>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label for="apiKeyInput" class="form-label">Chave de API</label>
+                    <input type="password" id="apiKeyInput" class="form-control" placeholder="Digite a chave">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelApiKeyBtn" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="confirmApiKeyBtn">
+                    <i class="fas fa-lock"></i>
+                    Entrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PARA LIMPAR CONEXOES -->
+<div class="modal fade" id="clearConnectionsModal" tabindex="-1" aria-labelledby="clearConnectionsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 520px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="clearConnectionsLabel">
+                    <i class="fas fa-trash-alt" style="margin-right: 0.8rem;"></i>
+                    Limpar conexões
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-aviso" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Essa ação remove a sessão atual e o cache do WhatsApp.</span>
+                </div>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label for="clearPassword" class="form-label">Senha de autorizacão</label>
+                    <input type="password" id="clearPassword" class="form-control" placeholder="Digite a senha">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmClearBtn">
+                    <i class="fas fa-trash-alt"></i>
+                    Limpar agora
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script Principal -->
+<script>
+let lastQrCodeData = null;
+let qrModalInstance;
+let clearModalInstance;
+let apiKeyModalInstance;
+let selectedFiles = [];
+
+const API_KEY_STORAGE = 'hr_whatsapp_api_key';
+const THEME_STORAGE = 'hr_whatsapp_theme';
+
+const getApiKeyFromUrl = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('api_key') || params.get('apikey') || params.get('apiKey');
+};
+
+const storeApiKey = (value) => {
+    if (value) {
+        localStorage.setItem(API_KEY_STORAGE, value);
+    }
+};
+
+const readApiKey = () => localStorage.getItem(API_KEY_STORAGE) || '';
+
+let apiKey = '';
+
+const bootstrapApiKey = () => {
+    const urlKey = getApiKeyFromUrl();
+    if (urlKey) {
+        apiKey = urlKey;
+        storeApiKey(urlKey);
+        const cleanUrl = new URL(window.location.href);
+        cleanUrl.searchParams.delete('api_key');
+        cleanUrl.searchParams.delete('apikey');
+        cleanUrl.searchParams.delete('apiKey');
+        window.history.replaceState({}, document.title, cleanUrl.toString());
+    } else {
+        apiKey = readApiKey();
+    }
+};
+
+bootstrapApiKey();
+
+const withApiKey = (url) => url;
+
+const apiFetch = (url, options = {}) => {
+    const headers = new Headers(options.headers || {});
+    if (apiKey) {
+        headers.set('x-api-key', apiKey);
+    }
+    return fetch(withApiKey(url), { ...options, headers });
+};
+
+const logUI = (...args) => console.log('[UI]', ...args);
+
+const setTheme = (theme) => {
+    const root = document.documentElement;
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem(THEME_STORAGE, theme);
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) {
+        const isDark = theme === 'dark';
+        toggle.innerHTML = isDark
+            ? '<i class="fas fa-sun"></i><span>Modo claro</span>'
+            : '<i class="fas fa-moon"></i><span>Modo escuro</span>';
+    }
+};
+
+const initTheme = () => {
+    const saved = localStorage.getItem(THEME_STORAGE);
+    if (saved === 'dark' || saved === 'light') {
+        setTheme(saved);
+        return;
+    }
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(prefersDark ? 'dark' : 'light');
+};
+
+const formatFileSize = (bytes) => {
+    if (!bytes && bytes !== 0) return '';
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let size = bytes;
+    let unitIndex = 0;
+    while (size >= 1024 && unitIndex < units.length - 1) {
+        size /= 1024;
+        unitIndex += 1;
+    }
+    return `${size.toFixed(size >= 10 ? 0 : 1)} ${units[unitIndex]}`;
+};
+
+const buildFileKey = (file) => `${file.name}_${file.size}_${file.lastModified}`;
+
+const syncFileInput = () => {
+    const fileInput = document.getElementById('file');
+    if (!fileInput) return;
+    const dataTransfer = new DataTransfer();
+    selectedFiles.forEach((file) => dataTransfer.items.add(file));
+    fileInput.files = dataTransfer.files;
+};
+
+const renderFileList = () => {
+    const fileList = document.getElementById('fileList');
+    if (!fileList) return;
+    fileList.innerHTML = '';
+    selectedFiles.forEach((file, index) => {
+        const item = document.createElement('div');
+        item.className = 'file-item';
+        item.innerHTML = `
+            <span class="file-name" title="${file.name}">${file.name}</span>
+            <span class="file-size">${formatFileSize(file.size)}</span>
+            <button type="button" class="file-remove" data-index="${index}" aria-label="Remover arquivo">×</button>
+        `;
+        fileList.appendChild(item);
+    });
+};
+
+const addFiles = (files) => {
+    if (!files || files.length === 0) return;
+    const existing = new Set(selectedFiles.map(buildFileKey));
+    Array.from(files).forEach((file) => {
+        const key = buildFileKey(file);
+        if (!existing.has(key)) {
+            selectedFiles.push(file);
+            existing.add(key);
+        }
+    });
+    syncFileInput();
+    renderFileList();
+};
+
+const removeFileAt = (index) => {
+    if (index < 0 || index >= selectedFiles.length) return;
+    selectedFiles.splice(index, 1);
+    syncFileInput();
+    renderFileList();
+};
+
+const clearSelectedFiles = () => {
+    selectedFiles = [];
+    syncFileInput();
+    renderFileList();
+};
+
+const ensureAuthorized = (response) => {
+    if (response.status === 401) {
+        openApiKeyModal('Informe a chave de API para continuar.');
+        const error = new Error('Não autorizado');
+        error.status = 401;
+        throw error;
+    }
+    return response;
+};
+
+function openApiKeyModal(message) {
+    if (!apiKeyModalInstance) return;
+    const messageEl = document.getElementById('apiKeyMessage');
+    const inputEl = document.getElementById('apiKeyInput');
+    if (messageEl && message) {
+        messageEl.textContent = message;
+    }
+    if (inputEl) {
+        inputEl.value = apiKey || '';
+        setTimeout(() => inputEl.focus(), 150);
+    }
+    apiKeyModalInstance.show();
+}
+
+function applyApiKey(value) {
+    const sanitized = String(value || '').trim();
+    if (!sanitized) return false;
+    apiKey = sanitized;
+    storeApiKey(sanitized);
+    return true;
+}
+
+function refreshStatus() {
+    apiFetch('/api/status')
+        .then(ensureAuthorized)
+        .then(async response => {
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                const error = new Error(data.mensagem || 'Falha ao consultar status.');
+                error.status = response.status;
+                throw error;
+            }
+            return data;
+        })
+        .then(data => {
+            updateConnectionStatus(data);
+        })
+        .catch(err => {
+            if (err && err.status === 401) return;
+            console.error('Erro ao verificar o status:', err);
+        });
+}
+
+function fetchQrImage() {
+    const qrCode = document.getElementById('qrCode');
+    const loadingMessage = document.getElementById('loadingMessage');
+    return apiFetch(`/api/qr?ts=${Date.now()}`)
+        .then(ensureAuthorized)
+        .then(async response => {
+            const contentType = response.headers.get('content-type') || '';
+            if (!response.ok) {
+                const data = await response.json().catch(() => ({}));
+                const error = new Error(data.mensagem || 'QR Code não disponível');
+                error.status = response.status;
+                throw error;
+            }
+            if (contentType.includes('application/json')) {
+                const data = await response.json().catch(() => ({}));
+                    throw new Error(data.mensagem || 'QR Code não disponível');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            loadingMessage.style.display = 'none';
+            qrCode.src = url;
+            qrCode.style.display = 'block';
+            logUI('QR carregado via HTTP');
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    initTheme();
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
+            setTheme(current === 'dark' ? 'light' : 'dark');
+        });
+    }
+
+    apiKeyModalInstance = new bootstrap.Modal(document.getElementById('apiKeyModal'));
+    document.getElementById('confirmApiKeyBtn').addEventListener('click', function () {
+        const valor = document.getElementById('apiKeyInput').value;
+        if (!applyApiKey(valor)) {
+            showMessageModal('Atenção', 'Informe a chave de API.', 'aviso');
+            return;
+        }
+        apiKeyModalInstance.hide();
+        refreshStatus();
+    });
+    document.getElementById('apiKeyInput').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            document.getElementById('confirmApiKeyBtn').click();
+        }
+    });
+
+    refreshStatus();
+
+    // Configurar WebSocket para receber notificacoes do servidor
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const socket = new WebSocket(`${wsProtocol}://${window.location.host}`);
+
+    socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        logUI('WS evento', data.type, data);
+        if (data.type === 'authenticated') {
+            if (qrModalInstance) {
+                qrModalInstance.hide();
+            }
+            location.reload();
+        } else if (data.type === 'qr') {
+            lastQrCodeData = data.data;
+            const qrModal = document.getElementById('qrModal');
+            if (qrModal.classList.contains('show')) {
+                displayQrCode();
+            } else {
+                logUI('QR recebido e armazenado, abra o modal para exibir.');
+            }
+        } else if (data.type === 'desconectado') {
+            updateConnectionStatus({ status: 'desconectado' });
+            showMessageModal('Desconectado', '<i class="fas fa-wifi-slash"></i> Você foi desconectado do WhatsApp', 'aviso');
+        } else if (data.type === 'estado') {
+            updateConnectionStatus({ status: data.data });
+        } else if (data.type === 'status' && data.data) {
+            updateConnectionStatus({ status: data.data.estado || data.data.status, numero: data.data.numero });
+        }
+    };
+
+    // Manipular o envio do formulario
+    document.getElementById('messageForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const form = this;
+        const messageValue = document.getElementById('message').value.trim();
+        if (!messageValue && selectedFiles.length === 0) {
+            showMessageModal('Atenção', 'Informe uma mensagem ou anexe um arquivo.', 'aviso');
+            return;
+        }
+        const formData = new FormData(form);
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+        apiFetch('/api/messages/send', {
+            method: 'POST',
+            body: formData
+        })
+        .then(ensureAuthorized)
+        .then(async response => {
+            const data = await response.json().catch(() => ({}));
+            logUI('Envio resposta', response.status, data);
+            return { ok: response.ok, data, status: response.status };
+        })
+        .then(({ ok, data, status }) => {
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+
+            if (ok && data.status === 'sucesso') {
+                showMessageModal('Sucesso', 'Mensagem enviada com sucesso!', 'sucesso');
+                form.reset();
+                clearSelectedFiles();
+            } else {
+                const detalhe = data.mensagem || `HTTP ${status}`;
+                showMessageModal('Erro', 'Erro ao enviar mensagem: ' + detalhe, 'erro');
+            }
+        })
+        .catch(err => {
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+            if (err && err.status === 401) {
+                return;
+            }
+            console.error('Erro ao enviar mensagem:', err);
+            showMessageModal('Erro', 'Erro ao enviar mensagem.', 'erro');
+        });
+    });
+
+    clearModalInstance = new bootstrap.Modal(document.getElementById('clearConnectionsModal'));
+    document.getElementById('confirmClearBtn').addEventListener('click', function () {
+        const senha = document.getElementById('clearPassword').value.trim();
+        if (!senha) {
+            showMessageModal('Atenção', 'Informe a senha para continuar.', 'aviso');
+            return;
+        }
+        clearConnections(senha);
+    });
+
+    setupQrImageHandlers();
+
+    const messageModalEl = document.getElementById('messageModal');
+    messageModalEl.addEventListener('hide.bs.modal', function () {
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+            document.activeElement.blur();
+        }
+    });
+
+    const fileInput = document.getElementById('file');
+    if (fileInput) {
+        fileInput.addEventListener('change', function (event) {
+            const incoming = Array.from(event.target.files || []);
+            fileInput.value = '';
+            addFiles(incoming);
+        });
+    }
+    const fileList = document.getElementById('fileList');
+    if (fileList) {
+        fileList.addEventListener('click', function (event) {
+            const target = event.target;
+            if (target && target.classList.contains('file-remove')) {
+                const index = parseInt(target.getAttribute('data-index'), 10);
+                if (!Number.isNaN(index)) {
+                    removeFileAt(index);
+                }
+            }
+        });
+    }
+});
+
+function normalizarStatus(status) {
+    const chave = String(status || '').toLowerCase();
+    const mapa = {
+        connected: 'conectado',
+        open: 'conectado',
+        ready: 'conectado',
+        connecting: 'conectando',
+        opening: 'conectando',
+        pairing: 'conectando',
+        waiting: 'aguardando',
+        timeout: 'tempo esgotado',
+        disconnected: 'desconectado',
+        unpaired: 'desconectado',
+        unpaired_idle: 'desconectado',
+        unlaunched: 'desconectado',
+        conflict: 'conflito',
+        proxyblock: 'proxy bloqueado',
+        tos_block: 'bloqueado por termos',
+        battery_low: 'bateria fraca',
+        phone_not_connected: 'telefone desconectado'
+    };
+    if (mapa[chave]) return mapa[chave];
+    return chave || 'desconectado';
+}
+
+function updateConnectionStatus(data) {
+    const statusElement = document.getElementById('connectionStatus');
+    const connectBtn = document.getElementById('connectBtn');
+    const statusIndicator = document.getElementById('statusIndicator');
+    const numeroConectado = document.getElementById('numeroConectado');
+
+    const status = normalizarStatus(data.status);
+
+    if (status === 'conectado') {
+        statusElement.textContent = 'Conectado';
+        numeroConectado.textContent = data.numero || data.number || '';
+        statusIndicator.classList.add('conectado');
+        statusIndicator.innerHTML = '<i class="fas fa-check-circle"></i>';
+        connectBtn.innerHTML = `<button class="status-button disconnect" onclick="disconnect()"><i class="fas fa-power-off"></i> Desconectar</button>`;
+    } else {
+        const label = status === 'conectando'
+            ? 'Conectando'
+            : status === 'aguardando'
+                ? 'Aguardando'
+                : status === 'tempo esgotado'
+                    ? 'Tempo esgotado'
+                    : status === 'conflito'
+                        ? 'Conflito'
+                        : status === 'proxy bloqueado'
+                            ? 'Proxy bloqueado'
+                            : status === 'bloqueado por termos'
+                                ? 'Bloqueado por termos'
+                                : status === 'bateria fraca'
+                                    ? 'Bateria fraca'
+                                    : status === 'telefone desconectado'
+                                        ? 'Telefone desconectado'
+                                        : 'Desconectado';
+        statusElement.textContent = label;
+        numeroConectado.textContent = '';
+        statusIndicator.classList.remove('conectado');
+        statusIndicator.innerHTML = '<i class="fas fa-times-circle"></i>';
+        connectBtn.innerHTML = `<button class="status-button connect" onclick="showQrCode()"><i class="fas fa-link"></i> Conectar</button>`;
+    }
+}
+
+function setupQrImageHandlers() {
+    const qrCode = document.getElementById('qrCode');
+    const loadingMessage = document.getElementById('loadingMessage');
+    if (!qrCode || !loadingMessage) return;
+    qrCode.addEventListener('error', function () {
+        const mensagem = apiKey
+            ? 'QR Code não disponível. Tente novamente em alguns segundos.'
+            : 'Chave de API ausente. Informe a chave para continuar.';
+        loadingMessage.innerHTML = `<i class="fas fa-exclamation-circle"></i><p>${mensagem}</p>`;
+        loadingMessage.style.display = 'block';
+        qrCode.style.display = 'none';
+        if (!apiKey) {
+            openApiKeyModal('Informe a chave de API para continuar.');
+        }
+    });
+}
+
+function showQrCode() {
+    const qrCode = document.getElementById('qrCode');
+    const loadingMessage = document.getElementById('loadingMessage');
+
+    loadingMessage.style.display = 'block';
+    loadingMessage.innerHTML = '<i class="fas fa-spinner"></i><p>Carregando QR Code...</p>';
+    qrCode.style.display = 'none';
+
+    if (lastQrCodeData) {
+        logUI('Usando QR recebido via WS');
+    }
+
+    fetchQrImage()
+        .catch(err => {
+            if (err && err.status === 401) {
+                return;
+            }
+            console.error('Erro ao buscar QR Code:', err);
+            loadingMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i><p>QR Code não disponível. Tente novamente em alguns segundos.</p>';
+        });
+
+    qrModalInstance = new bootstrap.Modal(document.getElementById('qrModal'));
+    qrModalInstance.show();
+}
+
+function displayQrCode() {
+    const qrCode = document.getElementById('qrCode');
+    const loadingMessage = document.getElementById('loadingMessage');
+    
+    if (!lastQrCodeData) return;
+    loadingMessage.style.display = 'block';
+    qrCode.style.display = 'none';
+    fetchQrImage()
+        .then(() => {
+            logUI('Exibindo QR atualizado');
+        })
+        .catch(err => {
+            if (err && err.status === 401) {
+                return;
+            }
+            console.error('Erro ao atualizar QR Code:', err);
+            loadingMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i><p>QR Code não disponível. Tente novamente em alguns segundos.</p>';
+        });
+}
+
+function disconnect() {
+    apiFetch('/api/disconnect')
+        .then(ensureAuthorized)
+        .then(() => {
+            showMessageModal('Desconectado', 'Desconectado com sucesso!', 'aviso');
+            document.getElementById('messageModal').addEventListener('hidden.bs.modal', function () {
+                location.reload();
+            }, { once: true });
+        })
+        .catch(err => {
+            if (err && err.status === 401) {
+                return;
+            }
+            console.error('Erro ao desconectar:', err);
+            showMessageModal('Erro', 'Erro ao desconectar.', 'erro');
+        });
+}
+
+function openClearConnectionsModal() {
+    document.getElementById('clearPassword').value = '';
+    clearModalInstance.show();
+}
+
+function clearConnections(senha) {
+    apiFetch('/api/clear-connections', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ senha: senha })
+    })
+    .then(ensureAuthorized)
+    .then(async response => {
+        const data = await response.json().catch(() => ({}));
+        if (response.ok) {
+            if (clearModalInstance) {
+                clearModalInstance.hide();
+            }
+            showMessageModal('Conexões limpas', 'Conexões e cache limpos. Conecte novamente.', 'sucesso');
+            document.getElementById('messageModal').addEventListener('hidden.bs.modal', function () {
+                location.reload();
+            }, { once: true });
+        } else {
+            showMessageModal('Erro', data.mensagem || 'Falha ao limpar conexões.', 'erro');
+        }
+    })
+    .catch(err => {
+        if (err && err.status === 401) {
+            return;
+        }
+        console.error('Erro ao limpar conexões:', err);
+        showMessageModal('Erro', 'Erro ao limpar conexões.', 'erro');
+    });
+}
+
+function showMessageModal(title, message, type) {
+    const messageModalLabel = document.getElementById('messageModalLabel');
+    const messageModalBody = document.getElementById('messageModalBody');
+
+    const mapa = {
+        sucesso: { classe: 'sucesso', icon: 'fa-check-circle' },
+        erro: { classe: 'erro', icon: 'fa-times-circle' },
+        aviso: { classe: 'aviso', icon: 'fa-info-circle' }
+    };
+    const tipo = mapa[type] || mapa.sucesso;
+
+    messageModalLabel.innerHTML = `<i class="fas ${tipo.icon}"></i> ${title}`;
+    messageModalBody.innerHTML = `<div class="alert alert-${tipo.classe}" role="alert"><i class="fas ${tipo.icon}"></i><span>${message}</span></div>`;
+
+    var messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+    messageModal.show();
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

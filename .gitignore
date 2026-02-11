@@ -1,0 +1,84 @@
+# =========================
+# Ambiente e segredos
+# =========================
+.env
+.env.*
+!.env.exemplo
+!.env.example
+secrets.json
+*.secrets
+config.ini
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Ambientes virtuais
+venv/
+env/
+.venv/
+
+# Build / distribuição
+build/
+dist/
+sdist/
+wheels/
+*.egg-info/
+*.egg
+
+# =========================
+# Node.js / WhatsApp API
+# =========================
+node_modules/
+whatsapp_api/node_modules/
+whatsapp_api/session/
+whatsapp_api/session-*/
+whatsapp_api/.wwebjs_cache/
+whatsapp_api/*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Dados locais de execução
+# =========================
+logs/
+*.log
+storage/
+static/captures/
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# IDE / sistema operacional
+# =========================
+.vscode/
+.idea/
+*.suo
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Temporários
+# =========================
+*.tmp
+*.temp
+nohup.out
