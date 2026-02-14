@@ -91,7 +91,6 @@ DIRETORIO_CAPTURAS = os.path.join(DIRETORIO_STATIC, "captures")
 DIRETORIO_ASSETS = os.path.join(DIRETORIO_BASE, "src", "assets")
 
 ASSETS_PERMITIDOS = {
-    "logo_hr_systems.svg",
     "logo_hr_azul.svg",
     "whatsapp_hr_api.svg",
     "logo_hr_branco.svg",
