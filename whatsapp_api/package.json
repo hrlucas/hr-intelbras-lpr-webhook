@@ -2,7 +2,7 @@
     "name": "hr-whatsapp-api",
     "version": "1.0.0",
     "description": "API completa de WhatsApp baseada no whatsapp-web.js",
-    "author": "Lucas Hochmann Rosa (HR Systems)",
+    "author": "Lucas Hochmann Rosa (hrlucas.dev)",
     "main": "index.js",
     "scripts": {
         "start": "node index.js"

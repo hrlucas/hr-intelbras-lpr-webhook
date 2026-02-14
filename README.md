@@ -15,7 +15,7 @@
   </a>
 </p>
 
-> Desenvolvi este projeto para consolidar minha experiência com integrações de webhook em ambiente real, recebendo leituras LPR de uma câmera Intelbras, persistindo dados no PostgreSQL e expondo painel web + API para monitoramento. O projeto pertence a **Lucas Hochmann Rosa / HR Systems**, está em evolução contínua e segue aberto para melhorias da comunidade sob licença MIT, com atribuição ao autor.
+> Desenvolvi este projeto para consolidar minha experiência com integrações de webhook em ambiente real, recebendo leituras LPR de uma câmera Intelbras, persistindo dados no PostgreSQL e expondo painel web + API para monitoramento. O projeto pertence a **Lucas Hochmann Rosa / hrlucas.dev**, está em evolução contínua e segue aberto para melhorias da comunidade sob licença MIT, com atribuição ao autor.
 
 ---
 
@@ -185,13 +185,13 @@ python fake_webhook.py
 
 ## 📄 Licença
 
-Licenciado sob MIT. Você pode usar, modificar e distribuir, mantendo o aviso de copyright e atribuindo crédito a **Lucas Hochmann Rosa / HR Systems**.
+Licenciado sob MIT. Você pode usar, modificar e distribuir, mantendo o aviso de copyright e atribuindo crédito a **Lucas Hochmann Rosa / hrlucas.dev**.
 
 ---
 
 ## 👨‍💻 Autor
 
-**Lucas Hochmann Rosa / HR Systems** — Desenvolvedor Full Stack
+**Lucas Hochmann Rosa / hrlucas.dev** — Desenvolvedor Full Stack
 
 - GitHub: https://github.com/hrlucas
 - LinkedIn: https://www.linkedin.com/in/lucas-hochmann-rosa-456bb7339/
